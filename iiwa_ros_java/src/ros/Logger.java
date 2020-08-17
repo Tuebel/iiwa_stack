@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
 import org.apache.commons.logging.Log;
 

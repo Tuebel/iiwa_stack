@@ -1,10 +1,8 @@
 ﻿/**
- * Copyright (C) 2016 Salvatore Virga - salvo.virga@tum.de, Marco Esposito - marco.esposito@tum.de
- * Technische Universität München
- * Chair for Computer Aided Medical Procedures and Augmented Reality
- * Fakultät für Informatik / I16, Boltzmannstraße 3, 85748 Garching bei München, Germany
- * http://campar.in.tum.de
- * All rights reserved.
+ * Copyright (C) 2016 Salvatore Virga - salvo.virga@tum.de, Marco Esposito - marco.esposito@tum.de Technische
+ * Universität München Chair for Computer Aided Medical Procedures and Augmented Reality Fakultät für
+ * Informatik / I16, Boltzmannstraße 3, 85748 Garching bei München, Germany http://campar.in.tum.de All rights
+ * reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided
  * that the following conditions are met:
@@ -25,7 +23,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros.app;
+package ros.app;
 
 import geometry_msgs.PoseStamped;
 import iiwa_msgs.ConfigureControlModeRequest;
@@ -53,17 +51,17 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import org.ros.node.service.ServiceResponseBuilder;
 
+import ros.Logger;
+import ros.Motions;
+import ros.SpeedLimits;
+import ros.UnsupportedControlModeException;
+import ros.iiwaSubscriber;
+import ros.CommandTypes.CommandType;
+import ros.iiwaActionServer.Goal;
+
 import com.kuka.roboticsAPI.geometricModel.SceneGraphObject;
 import com.kuka.roboticsAPI.geometricModel.Workpiece;
 import com.kuka.roboticsAPI.motionModel.controlModeModel.PositionControlMode;
-
-import de.tum.in.camp.kuka.ros.CommandTypes.CommandType;
-import de.tum.in.camp.kuka.ros.Logger;
-import de.tum.in.camp.kuka.ros.Motions;
-import de.tum.in.camp.kuka.ros.SpeedLimits;
-import de.tum.in.camp.kuka.ros.UnsupportedControlModeException;
-import de.tum.in.camp.kuka.ros.iiwaActionServer.Goal;
-import de.tum.in.camp.kuka.ros.iiwaSubscriber;
 
 /*
  * This application allows to command the robot using SmartServo motions.
@@ -96,7 +94,8 @@ public class ROSSmartServo extends ROSBaseApplication {
     subscriber = new iiwaSubscriber(robot, configuration.getRobotName(), configuration.getTimeProvider(),
         configuration.getEnforceMessageSequence());
 
-    // Configure the callback for the SmartServo service inside the subscriber
+    // Configure the callback for the SmartServo service inside the
+    // subscriber
     // class.
     subscriber
         .setConfigureControlModeCallback(new ServiceResponseBuilder<iiwa_msgs.ConfigureControlModeRequest, iiwa_msgs.ConfigureControlModeResponse>() {
@@ -106,9 +105,12 @@ public class ROSSmartServo extends ROSBaseApplication {
             try {
               // TODO: reduce code duplication
               if (lastCommandType == CommandType.SMART_SERVO_CARTESIAN_POSE_LIN) {
-                // We can just change the parameters if the control strategy is the same.
+                // We can just change the parameters if the
+                // control strategy is the same.
                 if (controlModeHandler.isSameControlMode(linearMotion.getMode(), req.getControlMode())) {
-                  // If the request was for PositionControlMode and we are already there, do nothing.
+                  // If the request was for
+                  // PositionControlMode and we are already
+                  // there, do nothing.
                   if (!(linearMotion.getMode() instanceof PositionControlMode)) {
                     linearMotion.getRuntime().changeControlModeSettings(controlModeHandler.buildMotionControlMode(req));
                   }
@@ -118,9 +120,12 @@ public class ROSSmartServo extends ROSBaseApplication {
                 }
               }
               else {
-                // We can just change the parameters if the control strategy is the same.
+                // We can just change the parameters if the
+                // control strategy is the same.
                 if (controlModeHandler.isSameControlMode(motion.getMode(), req.getControlMode())) {
-                  // If the request was for PositionControlMode and we are already there, do nothing.
+                  // If the request was for
+                  // PositionControlMode and we are already
+                  // there, do nothing.
                   if (!(motion.getMode() instanceof PositionControlMode)) {
                     motion.getRuntime().changeControlModeSettings(controlModeHandler.buildMotionControlMode(req));
                   }
@@ -166,7 +171,8 @@ public class ROSSmartServo extends ROSBaseApplication {
               }
             }
             catch (Exception e) {
-              // An exception should be thrown only if a motion/runtime is not available.
+              // An exception should be thrown only if a
+              // motion/runtime is not available.
               res.setRemainingTime(-999);
             }
           }
@@ -437,9 +443,11 @@ public class ROSSmartServo extends ROSBaseApplication {
         }
 
         // TODO: ask Arne: Why the need to set this to null?
-        // the methods to get the last commands already check if a new one has arrived, with the exception of
+        // the methods to get the last commands already check if a new
+        // one has arrived, with the exception of
         // the velocity commands.
-        // This was the velocity commands will only run for 1 control period.
+        // This was the velocity commands will only run for 1 control
+        // period.
         CommandType copy = subscriber.currentCommandType;
         subscriber.currentCommandType = null;
 
@@ -496,8 +504,10 @@ public class ROSSmartServo extends ROSBaseApplication {
   protected void activateMotionMode(CommandType commandType) {
     if (commandType == lastCommandType) {
       if (commandType == CommandType.POINT_TO_POINT_CARTESIAN_SPLINE) {
-        // For some reason the application gets stuck when executing two spline motions
-        // in a row. Switching the control mode to SmartServo and back in between
+        // For some reason the application gets stuck when executing two
+        // spline motions
+        // in a row. Switching the control mode to SmartServo and back
+        // in between
         // resolves the issue.
         // TODO: Find a cleaner way of solving this issue
         activateMotionMode(CommandType.SMART_SERVO_CARTESIAN_POSE_LIN);
@@ -549,8 +559,10 @@ public class ROSSmartServo extends ROSBaseApplication {
         controlModeHandler.disableSmartServo(linearMotion);
       }
       else if (lastCommandType == null) {
-        // For some reason the application gets stuck when executing two spline motions
-        // in a row. Switching the control mode to SmartServo and back in between
+        // For some reason the application gets stuck when executing two
+        // spline motions
+        // in a row. Switching the control mode to SmartServo and back
+        // in between
         // resolves the issue.
         // TODO: Find a cleaner way of solving this issue
         activateMotionMode(CommandType.SMART_SERVO_CARTESIAN_POSE_LIN);

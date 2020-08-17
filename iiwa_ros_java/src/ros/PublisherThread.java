@@ -1,9 +1,9 @@
 /**
- * Copyright (C) 2018 Arne Peters - arne.peters@tum.de 
- * Technische UniversitÃ¤t MÃ¼nchen
- * Chair for Robotics, Artificial Intelligence and Embedded Systems 
- * FakultÃ¤t fÃ¼r Informatik / I6, BoltzmannstraÃŸe 3, 85748 Garching bei MÃ¼nchen, Germany 
- * http://www6.in.tum.de 
+ * Copyright (C) 2019 Salvatore Virga - salvo.virga@tum.de
+ * Technische Universität München
+ * Chair for Computer Aided Medical Procedures and Augmented Reality
+ * Fakultät für Informatik / I16, Boltzmannstraße 3, 85748 Garching bei München, Germany
+ * http://campar.in.tum.de
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided
@@ -25,19 +25,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
-public class CommandTypes {
-  public enum CommandType {
-    SMART_SERVO_CARTESIAN_POSE,
-    SMART_SERVO_CARTESIAN_POSE_LIN,
-    SMART_SERVO_CARTESIAN_VELOCITY,
-    SMART_SERVO_JOINT_POSITION,
-    SMART_SERVO_JOINT_POSITION_VELOCITY,
-    SMART_SERVO_JOINT_VELOCITY,
-    POINT_TO_POINT_CARTESIAN_POSE,
-    POINT_TO_POINT_CARTESIAN_POSE_LIN,
-    POINT_TO_POINT_CARTESIAN_SPLINE,
-    POINT_TO_POINT_JOINT_POSITION 
-  }
+import java.util.TimerTask;
+
+import com.kuka.roboticsAPI.geometricModel.ObjectFrame;
+
+public class PublisherThread extends TimerTask {
+	private iiwaPublisher publisher = null;
+	private ObjectFrame endpointFrame = null;
+
+	public PublisherThread(iiwaPublisher publisher, ObjectFrame endpointFrame) {
+		this.publisher = publisher;
+		this.endpointFrame = endpointFrame;
+	}
+
+	public void changeEndpointFrame(ObjectFrame endpointFrame) {
+		this.endpointFrame = endpointFrame;
+	}
+
+	public void run() {
+		try {
+			publisher.publishCurrentState(endpointFrame);
+		} catch (InterruptedException e) {
+			Logger.error(e.toString());
+		}
+	}
 }

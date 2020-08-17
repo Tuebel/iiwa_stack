@@ -1,8 +1,8 @@
 /**
  * Copyright (C) 2018 Arne Peters - arne.peters@tum.de 
- * Technische Universität München
+ * Technische UniversitÃ¤t MÃ¼nchen
  * Chair for Robotics, Artificial Intelligence and Embedded Systems 
- * Fakultät für Informatik / I6, Boltzmannstraße 3, 85748 Garching bei München, Germany 
+ * FakultÃ¤t fÃ¼r Informatik / I6, BoltzmannstraÃŸe 3, 85748 Garching bei MÃ¼nchen, Germany 
  * http://www6.in.tum.de 
  * All rights reserved.
  * 
@@ -25,28 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
-import java.util.List;
-
-import com.kuka.roboticsAPI.deviceModel.Device;
-import com.kuka.roboticsAPI.motionModel.ErrorHandlingAction;
-import com.kuka.roboticsAPI.motionModel.IErrorHandler;
-import com.kuka.roboticsAPI.motionModel.IMotionContainer;
-
-public class MoveAsyncErrorHandler implements IErrorHandler {
-  public MoveAsyncErrorHandler(iiwaPublisher publisher, iiwaActionServer actionServer) {
-    this.publisher = publisher;
-    this.actionServer = actionServer;
+public class CommandTypes {
+  public enum CommandType {
+    SMART_SERVO_CARTESIAN_POSE,
+    SMART_SERVO_CARTESIAN_POSE_LIN,
+    SMART_SERVO_CARTESIAN_VELOCITY,
+    SMART_SERVO_JOINT_POSITION,
+    SMART_SERVO_JOINT_POSITION_VELOCITY,
+    SMART_SERVO_JOINT_VELOCITY,
+    POINT_TO_POINT_CARTESIAN_POSE,
+    POINT_TO_POINT_CARTESIAN_POSE_LIN,
+    POINT_TO_POINT_CARTESIAN_SPLINE,
+    POINT_TO_POINT_JOINT_POSITION 
   }
-
-  protected iiwaPublisher publisher;
-  protected iiwaActionServer actionServer;
-
-  @Override
-  public ErrorHandlingAction handleError(Device device, IMotionContainer failedContainer, List<IMotionContainer> canceledContainers) {
-    Logger.error(failedContainer.getErrorMessage());
-    return ErrorHandlingAction.PauseMotion;
-  }
-
 }

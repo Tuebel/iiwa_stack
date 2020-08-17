@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
 import java.net.InetAddress;
 import java.net.URI;

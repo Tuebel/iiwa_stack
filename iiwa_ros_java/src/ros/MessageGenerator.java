@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
 import geometry_msgs.Pose;
 
@@ -73,8 +73,8 @@ public class MessageGenerator {
                                                  // iiwa_link_0
 
     // e.g. if robotName == iiwa, the joints are iiwa_joint_1, iiwa_joint_2, ...
-    joint_names = new String[] { robotName + "_joint_1", robotName + "_joint_2", robotName + "_joint_3", robotName + "_joint_4", robotName + "_joint_5", robotName + "_joint_6",
-        robotName + "_joint_7" };
+    joint_names = new String[] { robotName + "_joint1", robotName + "_joint2", robotName + "_joint3", robotName + "_joint4", robotName + "_joint5", robotName + "_joint6",
+        robotName + "_joint7" };
     time = timeProvider;
   }
 

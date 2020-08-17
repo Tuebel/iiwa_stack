@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Salvatore Virga - salvo.virga@tum.de, Marco Esposito - marco.esposito@tum.de
+ * Copyright (C) 2019 Salvatore Virga - salvo.virga@tum.de
  * Technische Universität München
  * Chair for Computer Aided Medical Procedures and Augmented Reality
  * Fakultät für Informatik / I16, Boltzmannstraße 3, 85748 Garching bei München, Germany
@@ -25,27 +25,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
-import com.kuka.connectivity.motionModel.smartServo.IServoOnGoalReachedEvent;
+import java.util.TimerTask;
 
-public class GoalReachedEventListener implements IServoOnGoalReachedEvent {
+public class ActiveToolThread extends TimerTask {
 
-  protected iiwaPublisher publisher;
-  protected iiwaActionServer actionServer;
+  private ActiveTool tool = null;
 
-  public GoalReachedEventListener(iiwaPublisher publisher, iiwaActionServer actionServer) {
-    this.publisher = publisher;
-    this.actionServer = actionServer;
+  public ActiveToolThread(ActiveTool tool) {
+    this.tool = tool;
   }
 
   @Override
-  public void onGoalReachedEvent(String state, double[] currentAxisPos, int[] osTimestamp, int targetId) {
-    if (publisher != null) {
-      publisher.publishDestinationReached();
+  public void run() {
+    try {
+      tool.publishCurrentState();
     }
-    if (actionServer != null && actionServer.hasCurrentGoal() && actionServer.isActive()) {
-      actionServer.markCurrentGoalReached();
+    catch (InterruptedException e) {
+      Logger.error("Error while publishing tool state: " + e.toString());
     }
   }
+
 }

@@ -1,9 +1,9 @@
 /**
- * Copyright (C) 2018 Arne Peters - arne.peters@tum.de 
- * Technische UniversitÃ¤t MÃ¼nchen
- * Chair for Robotics, Artificial Intelligence and Embedded Systems 
- * FakultÃ¤t fÃ¼r Informatik / I6, BoltzmannstraÃŸe 3, 85748 Garching bei MÃ¼nchen, Germany 
- * http://www6.in.tum.de 
+ * Copyright (C) 2016 Salvatore Virga - salvo.virga@tum.de, Marco Esposito - marco.esposito@tum.de
+ * Technische Universität München
+ * Chair for Computer Aided Medical Procedures and Augmented Reality
+ * Fakultät für Informatik / I16, Boltzmannstraße 3, 85748 Garching bei München, Germany
+ * http://campar.in.tum.de
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided
@@ -25,25 +25,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
-import org.ros.node.NodeMainExecutor;
+public final class Utility {
 
-public interface ActiveTool {
-  /**
-   * This method is called after construction is done.
-   */
-  public void initialize(Configuration configuration, NodeMainExecutor mainExecutor);
+  private Utility() {}
 
-  /**
-   * This method is called periodically. Implement reaction to incoming commands here.
-   */
-  public void moveTool();
+  public static boolean isTwistGreaterThan(geometry_msgs.Twist twist, double value) {
+    return (twist.getLinear().getX() > value && twist.getLinear().getY() > value && twist.getLinear().getZ() > value && twist.getAngular().getX() > value
+        && twist.getAngular().getY() > value && twist.getAngular().getZ() > value);
+  }
 
-  /**
-   * This method is called periodically. Publish TF or other status data here.
-   * 
-   * @throws InterruptedException
-   */
-  public void publishCurrentState() throws InterruptedException;
+  public static boolean isVector3GreaterThan(geometry_msgs.Vector3 vector, double value) {
+    return (vector.getX() > value && vector.getY() > value && vector.getZ() > value);
+  }
 }

@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tum.in.camp.kuka.ros;
+package ros;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,7 +44,6 @@ import com.kuka.roboticsAPI.geometricModel.ObjectFrame;
 import com.github.rosjava_actionlib.ActionServer;
 import com.github.rosjava_actionlib.ActionServerListener;
 
-import de.tum.in.camp.kuka.ros.CommandTypes.CommandType;
 
 import iiwa_msgs.MoveAlongSplineActionFeedback;
 import iiwa_msgs.MoveAlongSplineActionGoal;
@@ -56,6 +55,8 @@ import iiwa_msgs.MoveToJointPositionActionGoal;
 import iiwa_msgs.MoveToJointPositionActionResult;
 import iiwa_msgs.MoveToJointPositionActionFeedback;
 import org.ros.internal.message.Message;
+
+import ros.CommandTypes.CommandType;
 
 public class iiwaActionServer extends AbstractNodeMain {
 
